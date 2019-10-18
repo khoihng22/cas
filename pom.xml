@@ -1,0 +1,218 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.apereo.cas</groupId>
+	<artifactId>cas-server-support-oauth</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>cas-server-support-oauth</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-api-throttle</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-api-services</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-audit</artifactId>
+			<version>5.3.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-audit-api</artifactId>
+			<version>5.3.7</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-services-registry</artifactId>
+			<version>5.3.7</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-oauth-core</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-oauth-services</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-services</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-throttle-core</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-authentication-attributes -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-authentication-attributes</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-authentication-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-authentication-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-web-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-web-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-configuration-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-util-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-support-oauth-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-oauth-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-support-throttle -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-throttle</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-tickets-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-tickets-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-cookie-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-cookie-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-support-memcached-ticket-registry -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-memcached-ticket-registry</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-support-memcached-spy -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-memcached-spy</artifactId>
+			<version>5.3.7</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-util -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-util</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-authentication-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-authentication-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-configuration -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-configuration</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-support-person-directory -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-person-directory</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-services-authentication -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-services-authentication</artifactId>
+			<version>5.3.7</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-web -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-web</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-logout -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-logout</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-logout-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-logout-api</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-api-configuration-model -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-api-configuration-model</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.pac4j/pac4j-cas -->
+		<dependency>
+			<groupId>org.pac4j</groupId>
+			<artifactId>pac4j-core</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+
+	</dependencies>
+	<build>
+		<finalName>cas-server-support-oauth</finalName>
+	</build>
+</project>
