@@ -1,16 +1,17 @@
 package org.apereo.cas.support.oauth.web;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Collection;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20GrantTypes;
 import org.apereo.cas.support.oauth.web.response.accesstoken.ext.BaseAccessTokenGrantRequestExtractor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This is {@link OAuth20HandlerInterceptorAdapter}.
@@ -19,7 +20,6 @@ import java.util.regex.Pattern;
  * @since 5.1.0
  */
 @Slf4j
-@AllArgsConstructor
 public class OAuth20HandlerInterceptorAdapter extends HandlerInterceptorAdapter {
     /**
      * Access token interceptor.
@@ -34,7 +34,16 @@ public class OAuth20HandlerInterceptorAdapter extends HandlerInterceptorAdapter 
     private final Collection<BaseAccessTokenGrantRequestExtractor> accessTokenGrantRequestExtractors;
 
 
-    @Override
+    public OAuth20HandlerInterceptorAdapter(HandlerInterceptorAdapter requiresAuthenticationAccessTokenInterceptor,
+			HandlerInterceptorAdapter requiresAuthenticationAuthorizeInterceptor,
+			Collection<BaseAccessTokenGrantRequestExtractor> accessTokenGrantRequestExtractors) {
+		super();
+		this.requiresAuthenticationAccessTokenInterceptor = requiresAuthenticationAccessTokenInterceptor;
+		this.requiresAuthenticationAuthorizeInterceptor = requiresAuthenticationAuthorizeInterceptor;
+		this.accessTokenGrantRequestExtractors = accessTokenGrantRequestExtractors;
+	}
+
+	@Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
                              final Object handler) throws Exception {
         if (isAccessTokenRequestRequest(request, response)) {

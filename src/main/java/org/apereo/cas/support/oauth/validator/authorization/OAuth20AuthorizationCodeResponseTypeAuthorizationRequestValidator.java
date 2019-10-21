@@ -14,6 +14,8 @@ import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.apereo.cas.util.HttpRequestUtils;
 import org.pac4j.core.context.J2EContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,14 +25,22 @@ import javax.servlet.http.HttpServletRequest;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-@Slf4j
-@RequiredArgsConstructor
 public class OAuth20AuthorizationCodeResponseTypeAuthorizationRequestValidator implements OAuth20AuthorizationRequestValidator {
     private final ServicesManager servicesManager;
     private final ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory;
     private final AuditableExecution registeredServiceAccessStrategyEnforcer;
 
-    @Override
+    Logger LOGGER = LoggerFactory.getLogger(OAuth20AuthorizationCodeResponseTypeAuthorizationRequestValidator.class);
+    public OAuth20AuthorizationCodeResponseTypeAuthorizationRequestValidator(ServicesManager servicesManager,
+			ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory,
+			AuditableExecution registeredServiceAccessStrategyEnforcer) {
+		super();
+		this.servicesManager = servicesManager;
+		this.webApplicationServiceServiceFactory = webApplicationServiceServiceFactory;
+		this.registeredServiceAccessStrategyEnforcer = registeredServiceAccessStrategyEnforcer;
+	}
+
+	@Override
     public boolean validate(final J2EContext context) {
         final HttpServletRequest request = context.getRequest();
         final boolean checkParameterExist = HttpRequestUtils.doesParameterExist(request, OAuth20Constants.CLIENT_ID)

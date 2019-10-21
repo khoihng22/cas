@@ -1,13 +1,13 @@
 package org.apereo.cas.support.oauth.web;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.jasig.cas.client.util.URIBuilder;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.http.url.UrlResolver;
-
-import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is {@link OAuth20CasCallbackUrlResolver}.
@@ -15,11 +15,10 @@ import java.util.Optional;
  * @author Misagh Moayyed
  * @since 5.1.0
  */
-@Slf4j
-@AllArgsConstructor
 public class OAuth20CasCallbackUrlResolver implements UrlResolver {
     private final String callbackUrl;
 
+    Logger LOGGER = LoggerFactory.getLogger(OAuth20CasCallbackUrlResolver.class);
     private static Optional<URIBuilder.BasicNameValuePair> getQueryParameter(final WebContext context, final String name) {
         final URIBuilder builderContext = new URIBuilder(context.getFullRequestURL());
         return builderContext.getQueryParams()
@@ -27,7 +26,12 @@ public class OAuth20CasCallbackUrlResolver implements UrlResolver {
             .findFirst();
     }
 
-    @Override
+    public OAuth20CasCallbackUrlResolver(String callbackUrl) {
+		super();
+		this.callbackUrl = callbackUrl;
+	}
+
+	@Override
     public String compute(final String url, final WebContext context) {
         if (url.startsWith(callbackUrl)) {
             final URIBuilder builder = new URIBuilder(url, true);

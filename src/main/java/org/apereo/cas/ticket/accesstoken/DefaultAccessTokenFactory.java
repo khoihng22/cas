@@ -20,7 +20,6 @@ import java.util.Collection;
  * @since 5.0.0
  */
 @Slf4j
-@AllArgsConstructor
 public class DefaultAccessTokenFactory implements AccessTokenFactory {
 
     /** Default instance for the ticket id generator. */
@@ -33,7 +32,14 @@ public class DefaultAccessTokenFactory implements AccessTokenFactory {
         this(new DefaultUniqueTicketIdGenerator(), expirationPolicy);
     }
 
-    @Override
+    public DefaultAccessTokenFactory(UniqueTicketIdGenerator accessTokenIdGenerator,
+			ExpirationPolicy expirationPolicy) {
+		super();
+		this.accessTokenIdGenerator = accessTokenIdGenerator;
+		this.expirationPolicy = expirationPolicy;
+	}
+
+	@Override
     public AccessToken create(final Service service, final Authentication authentication,
                               final TicketGrantingTicket ticketGrantingTicket, final Collection<String> scopes) {
         final String codeId = this.accessTokenIdGenerator.getNewTicketId(AccessToken.PREFIX);

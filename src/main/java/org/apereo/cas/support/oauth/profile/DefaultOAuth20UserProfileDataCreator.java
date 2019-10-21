@@ -1,7 +1,8 @@
 package org.apereo.cas.support.oauth.profile;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
@@ -13,13 +14,18 @@ import org.apereo.cas.support.oauth.web.views.OAuth20UserProfileViewRenderer;
 import org.apereo.cas.ticket.accesstoken.AccessToken;
 import org.apereo.inspektr.audit.annotation.Audit;
 import org.pac4j.core.context.J2EContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@AllArgsConstructor
+/**
+ * Default implementation of {@link OAuth20UserProfileDataCreator}.
+ *
+ * @author Dmitriy Kopylenko
+ * @since 5.3.0
+ */
 public class DefaultOAuth20UserProfileDataCreator implements OAuth20UserProfileDataCreator {
 
+	Logger LOGGER = LoggerFactory.getLogger(DefaultOAuth20UserProfileDataCreator.class);
     /**
      * The services manager.
      */
@@ -81,4 +87,3 @@ public class DefaultOAuth20UserProfileDataCreator implements OAuth20UserProfileD
         }
     }
 }
-

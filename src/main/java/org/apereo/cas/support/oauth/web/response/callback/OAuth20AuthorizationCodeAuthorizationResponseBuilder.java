@@ -12,6 +12,8 @@ import org.apereo.cas.ticket.code.OAuthCodeFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.util.CommonHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -24,13 +26,16 @@ import org.springframework.web.servlet.view.RedirectView;
 @Slf4j
 @RequiredArgsConstructor
 public class OAuth20AuthorizationCodeAuthorizationResponseBuilder implements OAuth20AuthorizationResponseBuilder {
-    /**
+    
+	Logger LOGGER = LoggerFactory.getLogger(OAuth20AuthorizationCodeAuthorizationResponseBuilder.class);
+	/**
      * The Ticket registry.
      */
     protected final TicketRegistry ticketRegistry;
 
     private final OAuthCodeFactory oAuthCodeFactory;
 
+    
     @Override
     public View build(final J2EContext context, final String clientId, final AccessTokenRequestDataHolder holder) {
         final Authentication authentication = holder.getAuthentication();
@@ -56,7 +61,14 @@ public class OAuth20AuthorizationCodeAuthorizationResponseBuilder implements OAu
         return new RedirectView(callbackUrl);
     }
 
-    @Override
+    public OAuth20AuthorizationCodeAuthorizationResponseBuilder(TicketRegistry ticketRegistry,
+			OAuthCodeFactory oAuthCodeFactory) {
+		super();
+		this.ticketRegistry = ticketRegistry;
+		this.oAuthCodeFactory = oAuthCodeFactory;
+	}
+
+	@Override
     public boolean supports(final J2EContext context) {
         final String responseType = context.getRequestParameter(OAuth20Constants.RESPONSE_TYPE);
         return StringUtils.equalsIgnoreCase(responseType, OAuth20ResponseTypes.CODE.getType());

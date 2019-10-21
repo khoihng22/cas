@@ -6,6 +6,8 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.pac4j.core.context.J2EContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -17,10 +19,9 @@ import java.util.Map;
  * @author Misagh Moayyed
  * @since 5.0.0
  */
-@Slf4j
-@AllArgsConstructor
 public class OAuth20ConsentApprovalViewResolver implements ConsentApprovalViewResolver {
 
+	Logger LOGGER =LoggerFactory.getLogger(OAuth20ConsentApprovalViewResolver.class);
     /**
      * CAS settings.
      */
@@ -40,7 +41,12 @@ public class OAuth20ConsentApprovalViewResolver implements ConsentApprovalViewRe
         return redirectToApproveView(context, service);
     }
 
-    /**
+    public OAuth20ConsentApprovalViewResolver(CasConfigurationProperties casProperties) {
+		super();
+		this.casProperties = casProperties;
+	}
+
+	/**
      * Is consent approval bypassed?
      *
      * @param context the context

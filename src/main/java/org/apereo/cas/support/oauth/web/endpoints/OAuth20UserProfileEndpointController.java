@@ -21,6 +21,8 @@ import org.apereo.cas.util.Pac4jUtils;
 import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.core.context.J2EContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,7 @@ import java.util.Map;
 @Slf4j
 public class OAuth20UserProfileEndpointController extends BaseOAuth20Controller {
 
+	Logger LOGGER = LoggerFactory.getLogger(OAuth20UserProfileEndpointController.class);
     /**
      * View renderer for the final profile.
      */
@@ -157,4 +160,3 @@ public class OAuth20UserProfileEndpointController extends BaseOAuth20Controller 
         return new ResponseEntity<>(value, HttpStatus.UNAUTHORIZED);
     }
 }
-

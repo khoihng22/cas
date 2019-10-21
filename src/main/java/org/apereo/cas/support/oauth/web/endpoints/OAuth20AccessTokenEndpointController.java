@@ -4,6 +4,7 @@ import com.google.common.base.Supplier;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.Logger;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -26,6 +27,7 @@ import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.Pac4jUtils;
 import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
 import org.pac4j.core.context.J2EContext;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +51,7 @@ public class OAuth20AccessTokenEndpointController extends BaseOAuth20Controller 
     private final OAuth20TokenGenerator accessTokenGenerator;
     private final AccessTokenResponseGenerator accessTokenResponseGenerator;
 
+    Logger LOGGER = (Logger) LoggerFactory.getLogger(OAuth20AccessTokenEndpointController.class);
     private final ExpirationPolicy accessTokenExpirationPolicy;
     private final Collection<BaseAccessTokenGrantRequestExtractor> accessTokenGrantRequestExtractors;
     private final Collection<OAuth20TokenRequestValidator> accessTokenGrantRequestValidators;

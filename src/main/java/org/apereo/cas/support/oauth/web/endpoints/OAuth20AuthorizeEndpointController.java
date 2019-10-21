@@ -36,6 +36,8 @@ import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -60,6 +62,7 @@ public class OAuth20AuthorizeEndpointController extends BaseOAuth20Controller {
      */
     protected final OAuthCodeFactory oAuthCodeFactory;
 
+    Logger LOGGER = LoggerFactory.getLogger(OAuth20AuthorizeEndpointController.class);
     /**
      * The Consent approval view resolver.
      */
@@ -274,6 +277,5 @@ public class OAuth20AuthorizeEndpointController extends BaseOAuth20Controller {
         return validator.validate(context);
     }
 }
-
 
 

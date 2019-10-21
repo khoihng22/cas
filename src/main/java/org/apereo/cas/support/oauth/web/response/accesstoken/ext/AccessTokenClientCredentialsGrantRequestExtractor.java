@@ -34,4 +34,3 @@ public class AccessTokenClientCredentialsGrantRequestExtractor extends AccessTok
         return OAuth20GrantTypes.CLIENT_CREDENTIALS;
     }
 }
-

@@ -64,7 +64,13 @@ public class OAuth20AccessTokenResponseGenerator implements AccessTokenResponseG
                 generateJsonInternal(request, response, jsonGenerator, accessTokenId,
                     refreshTokenId, timeout, service, registeredService, responseType);
                 jsonGenerator.writeEndObject();
-            }
+            } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         } else {
             generateTextInternal(request, response, accessTokenId, refreshTokenId, timeout);
         }
@@ -139,4 +145,3 @@ public class OAuth20AccessTokenResponseGenerator implements AccessTokenResponseG
         }
     }
 }
-

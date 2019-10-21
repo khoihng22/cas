@@ -68,9 +68,8 @@ public class OAuth20CallbackAuthorizeEndpointController extends BaseOAuth20Contr
         callback.perform(context, oauthConfig, J2ENopHttpActionAdapter.INSTANCE,
             null, Boolean.TRUE, Boolean.FALSE,
             Boolean.FALSE, Authenticators.CAS_OAUTH_CLIENT);
-        final String url = StringUtils.remove(response.getHeader("Location"), "redirect:");
+        final String url = StringUtils.remove(((HttpServletRequest) response).getHeader("Location"), "redirect:");
         final ProfileManager manager = Pac4jUtils.getPac4jProfileManager(request, response);
         return oAuth20CallbackAuthorizeViewResolver.resolve(context, manager, url);
     }
 }
-

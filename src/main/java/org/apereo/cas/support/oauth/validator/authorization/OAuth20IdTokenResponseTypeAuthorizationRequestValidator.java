@@ -1,6 +1,5 @@
 package org.apereo.cas.support.oauth.validator.authorization;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;

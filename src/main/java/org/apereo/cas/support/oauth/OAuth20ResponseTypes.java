@@ -27,4 +27,8 @@ public enum OAuth20ResponseTypes {
     OAuth20ResponseTypes(final String type) {
         this.type = type;
     }
+
+	public String getType() {
+		return type;
+	}
 }

@@ -20,7 +20,6 @@ import java.util.Collection;
  * @since 5.0.0
  */
 @Slf4j
-@AllArgsConstructor
 public class DefaultOAuthCodeFactory implements OAuthCodeFactory {
 
     /**
@@ -37,7 +36,13 @@ public class DefaultOAuthCodeFactory implements OAuthCodeFactory {
         this(new DefaultUniqueTicketIdGenerator(), expirationPolicy);
     }
     
-    @Override
+    public DefaultOAuthCodeFactory(UniqueTicketIdGenerator oAuthCodeIdGenerator, ExpirationPolicy expirationPolicy) {
+		super();
+		this.oAuthCodeIdGenerator = oAuthCodeIdGenerator;
+		this.expirationPolicy = expirationPolicy;
+	}
+
+	@Override
     public OAuthCode create(final Service service, final Authentication authentication,
                             final TicketGrantingTicket ticketGrantingTicket, final Collection<String> scopes) {
         final String codeId = this.oAuthCodeIdGenerator.getNewTicketId(OAuthCode.PREFIX);

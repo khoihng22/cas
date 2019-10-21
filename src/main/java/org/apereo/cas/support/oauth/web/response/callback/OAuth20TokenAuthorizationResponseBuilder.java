@@ -16,6 +16,8 @@ import org.apereo.cas.ticket.accesstoken.AccessToken;
 import org.apereo.cas.ticket.refreshtoken.RefreshToken;
 import org.apereo.cas.util.EncodingUtils;
 import org.pac4j.core.context.J2EContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -28,14 +30,21 @@ import java.util.List;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-@Slf4j
-@AllArgsConstructor
 public class OAuth20TokenAuthorizationResponseBuilder implements OAuth20AuthorizationResponseBuilder {
 
+	Logger LOGGER = LoggerFactory.getLogger(OAuth20TokenAuthorizationResponseBuilder.class);
     private final OAuth20TokenGenerator accessTokenGenerator;
     private final ExpirationPolicy accessTokenExpirationPolicy;
 
-    @Override
+    public OAuth20TokenAuthorizationResponseBuilder(OAuth20TokenGenerator accessTokenGenerator,
+			ExpirationPolicy accessTokenExpirationPolicy) {
+		super();
+		this.accessTokenGenerator = accessTokenGenerator;
+		this.accessTokenExpirationPolicy = accessTokenExpirationPolicy;
+	}
+
+
+	@Override
     @SneakyThrows
     public View build(final J2EContext context, final String clientId, final AccessTokenRequestDataHolder holder) {
 

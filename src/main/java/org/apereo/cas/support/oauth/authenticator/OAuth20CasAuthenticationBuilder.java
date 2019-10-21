@@ -1,8 +1,49 @@
 package org.apereo.cas.support.oauth.authenticator;
 
-@AllArgsConstructor
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.CasProtocolConstants;
+import org.apereo.cas.authentication.Authentication;
+import org.apereo.cas.authentication.AuthenticationBuilder;
+import org.apereo.cas.authentication.AuthenticationHandler;
+import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
+import org.apereo.cas.authentication.AuthenticationManager;
+import org.apereo.cas.authentication.BasicCredentialMetaData;
+import org.apereo.cas.authentication.BasicIdentifiableCredential;
+import org.apereo.cas.authentication.CredentialMetaData;
+import org.apereo.cas.authentication.DefaultAuthenticationBuilder;
+import org.apereo.cas.authentication.DefaultAuthenticationHandlerExecutionResult;
+import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.authentication.principal.PrincipalFactory;
+import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.authentication.principal.ServiceFactory;
+import org.apereo.cas.authentication.principal.WebApplicationService;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.profile.OAuth20ProfileScopeToAttributesFilter;
+import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
+import org.apereo.cas.support.oauth.util.OAuth20Utils;
+import org.apereo.cas.util.CollectionUtils;
+import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.profile.UserProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * This is {@link OAuth20CasAuthenticationBuilder}.
+ *
+ * @author Misagh Moayyed
+ * @since 5.1.0
+ */
 public class OAuth20CasAuthenticationBuilder {
 
+	Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
     /**
      * The Principal factory.
      */
@@ -23,7 +64,17 @@ public class OAuth20CasAuthenticationBuilder {
      */
     protected final CasConfigurationProperties casProperties;
     
-    /**
+    public OAuth20CasAuthenticationBuilder(PrincipalFactory principalFactory,
+			ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory,
+			OAuth20ProfileScopeToAttributesFilter scopeToAttributesFilter, CasConfigurationProperties casProperties) {
+		super();
+		this.principalFactory = principalFactory;
+		this.webApplicationServiceServiceFactory = webApplicationServiceServiceFactory;
+		this.scopeToAttributesFilter = scopeToAttributesFilter;
+		this.casProperties = casProperties;
+	}
+
+	/**
      * Build service.
      *
      * @param registeredService the registered service
@@ -117,4 +168,3 @@ public class OAuth20CasAuthenticationBuilder {
         LOGGER.debug("Added attribute [{}] to the authentication", name);
     }
 }
-

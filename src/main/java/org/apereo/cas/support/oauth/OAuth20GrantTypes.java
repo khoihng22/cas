@@ -33,4 +33,8 @@ public enum OAuth20GrantTypes {
     OAuth20GrantTypes(final String type) {
         this.type = type;
     }
+
+	public String getType() {
+		return type;
+	}
 }

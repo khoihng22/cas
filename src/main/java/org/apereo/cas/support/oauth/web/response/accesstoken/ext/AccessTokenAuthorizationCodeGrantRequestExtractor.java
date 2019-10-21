@@ -150,4 +150,3 @@ public class AccessTokenAuthorizationCodeGrantRequestExtractor extends BaseAcces
         return registeredService;
     }
 }
-

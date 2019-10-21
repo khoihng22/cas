@@ -23,6 +23,8 @@ import org.apereo.cas.util.Pac4jUtils;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,9 +37,9 @@ import java.util.Set;
  * @author Misagh Moayyed
  * @since 5.1.0
  */
-@Slf4j
 public class AccessTokenPasswordGrantRequestExtractor extends BaseAccessTokenGrantRequestExtractor {
 
+	Logger LOGGER = LoggerFactory.getLogger(AccessTokenPasswordGrantRequestExtractor.class);
     private final AuditableExecution registeredServiceAccessStrategyEnforcer;
     private final OAuth20CasAuthenticationBuilder authenticationBuilder;
 
@@ -104,4 +106,3 @@ public class AccessTokenPasswordGrantRequestExtractor extends BaseAccessTokenGra
         return OAuth20GrantTypes.PASSWORD;
     }
 }
-

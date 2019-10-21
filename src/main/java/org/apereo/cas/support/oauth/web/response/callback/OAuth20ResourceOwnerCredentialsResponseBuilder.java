@@ -22,14 +22,21 @@ import org.springframework.web.servlet.View;
  * @since 5.2.0
  */
 @Slf4j
-@AllArgsConstructor
 public class OAuth20ResourceOwnerCredentialsResponseBuilder implements OAuth20AuthorizationResponseBuilder {
     private final AccessTokenResponseGenerator accessTokenResponseGenerator;
     private final OAuth20TokenGenerator accessTokenGenerator;
     private final ExpirationPolicy accessTokenExpirationPolicy;
 
 
-    @Override
+    public OAuth20ResourceOwnerCredentialsResponseBuilder(AccessTokenResponseGenerator accessTokenResponseGenerator,
+			OAuth20TokenGenerator accessTokenGenerator, ExpirationPolicy accessTokenExpirationPolicy) {
+		super();
+		this.accessTokenResponseGenerator = accessTokenResponseGenerator;
+		this.accessTokenGenerator = accessTokenGenerator;
+		this.accessTokenExpirationPolicy = accessTokenExpirationPolicy;
+	}
+
+	@Override
     public View build(final J2EContext context, final String clientId, final AccessTokenRequestDataHolder holder) {
         final Pair<AccessToken, RefreshToken> accessToken = accessTokenGenerator.generate(holder);
         accessTokenResponseGenerator.generate(context.getRequest(),

@@ -1,10 +1,14 @@
 package org.apereo.cas.config;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.support.oauth.authenticator.Authenticators;
+import org.apereo.cas.support.oauth.web.OAuth20HandlerInterceptorAdapter;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.BaseAccessTokenGrantRequestExtractor;
+import org.apereo.cas.web.support.AuthenticationThrottlingExecutionPlan;
+import org.apereo.cas.web.support.AuthenticationThrottlingExecutionPlanConfigurer;
+import org.pac4j.core.config.Config;
+import org.pac4j.springframework.web.SecurityInterceptor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,8 +20,19 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.opensymphony.oscache.base.Config;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static org.apereo.cas.support.oauth.OAuth20Constants.BASE_OAUTH20_URL;
+
+/**
+ * This is {@link CasOAuthThrottleConfiguration}.
+ *
+ * @author Misagh Moayyed
+ * @since 5.3.0
+ */
+@Slf4j
 @Configuration("oauthThrottleConfiguration")
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 public class CasOAuthThrottleConfiguration implements AuthenticationThrottlingExecutionPlanConfigurer {
@@ -74,4 +89,3 @@ public class CasOAuthThrottleConfiguration implements AuthenticationThrottlingEx
     }
 
 }
-

@@ -1,16 +1,17 @@
 package org.apereo.cas.support.oauth.web.response.accesstoken.ext;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.support.oauth.OAuth20GrantTypes;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.ticket.OAuthToken;
 import org.apereo.cas.ticket.TicketGrantingTicket;
-import java.util.LinkedHashSet;
-import java.util.Set;
+
 import lombok.ToString;
-import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This is {@link AccessTokenRequestDataHolder}.
@@ -20,7 +21,6 @@ import lombok.Getter;
  */
 @Slf4j
 @ToString
-@Getter
 public class AccessTokenRequestDataHolder {
 
     private final Service service;
@@ -67,5 +67,37 @@ public class AccessTokenRequestDataHolder {
         this.grantType = grantType;
         this.scopes = new LinkedHashSet<>(scopes);
     }
+
+	public Service getService() {
+		return service;
+	}
+
+	public Authentication getAuthentication() {
+		return authentication;
+	}
+
+	public OAuthToken getToken() {
+		return token;
+	}
+
+	public boolean isGenerateRefreshToken() {
+		return generateRefreshToken;
+	}
+
+	public OAuthRegisteredService getRegisteredService() {
+		return registeredService;
+	}
+
+	public TicketGrantingTicket getTicketGrantingTicket() {
+		return ticketGrantingTicket;
+	}
+
+	public OAuth20GrantTypes getGrantType() {
+		return grantType;
+	}
+
+	public Set<String> getScopes() {
+		return scopes;
+	}
 
 }

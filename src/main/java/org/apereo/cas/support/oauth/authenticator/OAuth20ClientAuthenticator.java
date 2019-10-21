@@ -1,17 +1,47 @@
 package org.apereo.cas.support.oauth.authenticator;
 
-import org.apache.http.auth.UsernamePasswordCredentials;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apereo.cas.audit.AuditableContext;
+import org.apereo.cas.audit.AuditableExecution;
+import org.apereo.cas.audit.AuditableExecutionResult;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
+import org.apereo.cas.support.oauth.util.OAuth20Utils;
+import org.pac4j.core.context.WebContext;
+import org.pac4j.core.credentials.UsernamePasswordCredentials;
+import org.pac4j.core.credentials.authenticator.Authenticator;
+import org.pac4j.core.exception.CredentialsException;
+import org.pac4j.core.profile.CommonProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@AllArgsConstructor
+/**
+ * Authenticator for client credentials authentication.
+ *
+ * @author Jerome Leleu
+ * @since 5.0.0
+ */
 public class OAuth20ClientAuthenticator implements Authenticator<UsernamePasswordCredentials> {
     private final ServicesManager servicesManager;
     private final ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory;
     private final AuditableExecution registeredServiceAccessStrategyEnforcer;
+    
+	Logger LOGGER = LoggerFactory.getLogger(OAuth20ClientAuthenticator.class);
 
-    @Override
+
+    public OAuth20ClientAuthenticator(ServicesManager servicesManager,
+			ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory,
+			AuditableExecution registeredServiceAccessStrategyEnforcer) {
+		super();
+		this.servicesManager = servicesManager;
+		this.webApplicationServiceServiceFactory = webApplicationServiceServiceFactory;
+		this.registeredServiceAccessStrategyEnforcer = registeredServiceAccessStrategyEnforcer;
+	}
+
+	@Override
     public void validate(final UsernamePasswordCredentials credentials, final WebContext context) throws CredentialsException {
         LOGGER.debug("Authenticating credential [{}]", credentials);
 
@@ -40,4 +70,3 @@ public class OAuth20ClientAuthenticator implements Authenticator<UsernamePasswor
         LOGGER.debug("Authenticated user profile [{}]", profile);
     }
 }
-

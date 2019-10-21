@@ -1,9 +1,155 @@
 package org.apereo.cas.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.annotation.Bean;
+import org.apereo.cas.CentralAuthenticationService;
+import org.apereo.cas.audit.AuditTrailConstants;
+import org.apereo.cas.audit.AuditTrailRecordResolutionPlanConfigurer;
+import org.apereo.cas.audit.AuditableExecution;
+import org.apereo.cas.authentication.AuthenticationSystemSupport;
+import org.apereo.cas.authentication.principal.PrincipalFactory;
+import org.apereo.cas.authentication.principal.PrincipalFactoryUtils;
+import org.apereo.cas.authentication.principal.ServiceFactory;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.integration.pac4j.DistributedJ2ESessionStore;
+import org.apereo.cas.services.RegisteredServiceCipherExecutor;
+import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.support.oauth.OAuth20ClientIdAwareProfileManager;
+import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.authenticator.Authenticators;
+import org.apereo.cas.support.oauth.authenticator.OAuth20AccessTokenAuthenticator;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
+import org.apereo.cas.support.oauth.authenticator.OAuth20ClientIdClientSecretAuthenticator;
+import org.apereo.cas.support.oauth.authenticator.OAuth20ProofKeyCodeExchangeAuthenticator;
+import org.apereo.cas.support.oauth.authenticator.OAuth20UsernamePasswordAuthenticator;
+import org.apereo.cas.support.oauth.authenticator.OAuthAuthenticationClientProvider;
+import org.apereo.cas.support.oauth.profile.CasServerApiBasedTicketValidator;
+import org.apereo.cas.support.oauth.profile.DefaultOAuth20ProfileScopeToAttributesFilter;
+import org.apereo.cas.support.oauth.profile.DefaultOAuth20UserProfileDataCreator;
+import org.apereo.cas.support.oauth.profile.OAuth20ProfileScopeToAttributesFilter;
+import org.apereo.cas.support.oauth.profile.OAuth20UserProfileDataCreator;
+import org.apereo.cas.support.oauth.services.OAuth20RegisteredServiceCipherExecutor;
+import org.apereo.cas.support.oauth.util.OAuth20Utils;
+import org.apereo.cas.support.oauth.validator.authorization.OAuth20AuthorizationCodeResponseTypeAuthorizationRequestValidator;
+import org.apereo.cas.support.oauth.validator.authorization.OAuth20AuthorizationRequestValidator;
+import org.apereo.cas.support.oauth.validator.authorization.OAuth20IdTokenAndTokenResponseTypeAuthorizationRequestValidator;
+import org.apereo.cas.support.oauth.validator.authorization.OAuth20IdTokenResponseTypeAuthorizationRequestValidator;
+import org.apereo.cas.support.oauth.validator.authorization.OAuth20ProofKeyCodeExchangeResponseTypeAuthorizationRequestValidator;
+import org.apereo.cas.support.oauth.validator.authorization.OAuth20TokenResponseTypeAuthorizationRequestValidator;
+import org.apereo.cas.support.oauth.validator.token.OAuth20AuthorizationCodeGrantTypeProofKeyCodeExchangeTokenRequestValidator;
+import org.apereo.cas.support.oauth.validator.token.OAuth20AuthorizationCodeGrantTypeTokenRequestValidator;
+import org.apereo.cas.support.oauth.validator.token.OAuth20ClientCredentialsGrantTypeTokenRequestValidator;
+import org.apereo.cas.support.oauth.validator.token.OAuth20DeviceCodeResponseTypeRequestValidator;
+import org.apereo.cas.support.oauth.validator.token.OAuth20PasswordGrantTypeTokenRequestValidator;
+import org.apereo.cas.support.oauth.validator.token.OAuth20RefreshTokenGrantTypeTokenRequestValidator;
+import org.apereo.cas.support.oauth.validator.token.OAuth20TokenRequestValidator;
+import org.apereo.cas.support.oauth.web.OAuth20CasCallbackUrlResolver;
+import org.apereo.cas.support.oauth.web.audit.AccessTokenResponseAuditResourceResolver;
+import org.apereo.cas.support.oauth.web.audit.OAuth20AccessTokenGrantRequestAuditResourceResolver;
+import org.apereo.cas.support.oauth.web.audit.OAuth20UserProfileDataAuditResourceResolver;
+import org.apereo.cas.support.oauth.web.endpoints.OAuth20AccessTokenEndpointController;
+import org.apereo.cas.support.oauth.web.endpoints.OAuth20AuthorizeEndpointController;
+import org.apereo.cas.support.oauth.web.endpoints.OAuth20CallbackAuthorizeEndpointController;
+import org.apereo.cas.support.oauth.web.endpoints.OAuth20ConfigurationContext;
+import org.apereo.cas.support.oauth.web.endpoints.OAuth20DeviceUserCodeApprovalEndpointController;
+import org.apereo.cas.support.oauth.web.endpoints.OAuth20IntrospectionEndpointController;
+import org.apereo.cas.support.oauth.web.endpoints.OAuth20UserProfileEndpointController;
+import org.apereo.cas.support.oauth.web.mgmt.OAuth20TokenManagementEndpoint;
+import org.apereo.cas.support.oauth.web.response.OAuth20CasClientRedirectActionBuilder;
+import org.apereo.cas.support.oauth.web.response.OAuth20DefaultCasClientRedirectActionBuilder;
+import org.apereo.cas.support.oauth.web.response.accesstoken.OAuth20DefaultTokenGenerator;
+import org.apereo.cas.support.oauth.web.response.accesstoken.OAuth20TokenGenerator;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenAuthorizationCodeGrantRequestExtractor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenClientCredentialsGrantRequestExtractor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenDeviceCodeResponseRequestExtractor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenGrantAuditableRequestExtractor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenGrantRequestExtractor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenPasswordGrantRequestExtractor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenProofKeyCodeExchangeAuthorizationCodeGrantRequestExtractor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenRefreshTokenGrantRequestExtractor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.response.OAuth20AccessTokenResponseGenerator;
+import org.apereo.cas.support.oauth.web.response.accesstoken.response.OAuth20DefaultAccessTokenResponseGenerator;
+import org.apereo.cas.support.oauth.web.response.accesstoken.response.OAuth20JwtAccessTokenCipherExecutor;
+import org.apereo.cas.support.oauth.web.response.accesstoken.response.OAuth20RegisteredServiceJwtAccessTokenCipherExecutor;
+import org.apereo.cas.support.oauth.web.response.callback.OAuth20AuthorizationCodeAuthorizationResponseBuilder;
+import org.apereo.cas.support.oauth.web.response.callback.OAuth20AuthorizationResponseBuilder;
+import org.apereo.cas.support.oauth.web.response.callback.OAuth20ClientCredentialsResponseBuilder;
+import org.apereo.cas.support.oauth.web.response.callback.OAuth20ResourceOwnerCredentialsResponseBuilder;
+import org.apereo.cas.support.oauth.web.response.callback.OAuth20TokenAuthorizationResponseBuilder;
+import org.apereo.cas.support.oauth.web.views.ConsentApprovalViewResolver;
+import org.apereo.cas.support.oauth.web.views.OAuth20CallbackAuthorizeViewResolver;
+import org.apereo.cas.support.oauth.web.views.OAuth20ConsentApprovalViewResolver;
+import org.apereo.cas.support.oauth.web.views.OAuth20DefaultUserProfileViewRenderer;
+import org.apereo.cas.support.oauth.web.views.OAuth20UserProfileViewRenderer;
+import org.apereo.cas.ticket.ExpirationPolicyBuilder;
+import org.apereo.cas.ticket.TicketFactory;
+import org.apereo.cas.ticket.UniqueTicketIdGenerator;
+import org.apereo.cas.ticket.accesstoken.AccessTokenExpirationPolicyBuilder;
+import org.apereo.cas.ticket.accesstoken.AccessTokenFactory;
+import org.apereo.cas.ticket.accesstoken.DefaultAccessTokenFactory;
+import org.apereo.cas.ticket.accesstoken.OAuth20JwtBuilder;
+import org.apereo.cas.ticket.code.DefaultOAuthCodeFactory;
+import org.apereo.cas.ticket.code.OAuthCodeExpirationPolicyBuilder;
+import org.apereo.cas.ticket.code.OAuthCodeFactory;
+import org.apereo.cas.ticket.device.DefaultDeviceTokenFactory;
+import org.apereo.cas.ticket.device.DeviceTokenExpirationPolicyBuilder;
+import org.apereo.cas.ticket.device.DeviceTokenFactory;
+import org.apereo.cas.ticket.refreshtoken.DefaultRefreshTokenFactory;
+import org.apereo.cas.ticket.refreshtoken.RefreshTokenExpirationPolicyBuilder;
+import org.apereo.cas.ticket.refreshtoken.RefreshTokenFactory;
+import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.token.JwtBuilder;
+import org.apereo.cas.util.CollectionUtils;
+import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
+import org.apereo.cas.util.crypto.CipherExecutor;
+import org.apereo.cas.util.function.FunctionUtils;
+import org.apereo.cas.web.cookie.CasCookieBuilder;
 
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.apache.commons.lang3.StringUtils;
+import org.apereo.inspektr.audit.spi.support.DefaultAuditActionResolver;
+import org.pac4j.cas.client.CasClient;
+import org.pac4j.cas.config.CasConfiguration;
+import org.pac4j.core.client.Client;
+import org.pac4j.core.config.Config;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.credentials.TokenCredentials;
+import org.pac4j.core.credentials.UsernamePasswordCredentials;
+import org.pac4j.core.credentials.authenticator.Authenticator;
+import org.pac4j.core.credentials.extractor.BearerAuthExtractor;
+import org.pac4j.core.http.url.UrlResolver;
+import org.pac4j.http.client.direct.DirectBasicAuthClient;
+import org.pac4j.http.client.direct.DirectFormClient;
+import org.pac4j.http.client.direct.HeaderClient;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.AnnotationAwareOrderComparator;
+import org.springframework.core.io.ResourceLoader;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+
+/**
+ * This this {@link CasOAuthConfiguration}.
+ *
+ * @author Misagh Moayyed
+ * @author Dmitriy Kopylenko
+ * @since 5.0.0
+ */
 @Configuration("oauthConfiguration")
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 @Slf4j
@@ -458,4 +604,3 @@ public class CasOAuthConfiguration implements AuditTrailRecordResolutionPlanConf
         plan.registerServiceRegistry(new OAuth20ServiceRegistry(service));
     }
 }
-

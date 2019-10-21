@@ -1,5 +1,11 @@
 package org.apereo.cas.support.oauth.authenticator;
 
+/**
+ * This is {@link Authenticators}.
+ *
+ * @author Misagh Moayyed
+ * @since 5.1.0
+ */
 public interface Authenticators {
     /**
      * Generic oauth clients.

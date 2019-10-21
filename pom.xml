@@ -29,19 +29,16 @@
 			<groupId>org.apereo.cas</groupId>
 			<artifactId>cas-server-core-audit</artifactId>
 			<version>5.3.7</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apereo.cas</groupId>
 			<artifactId>cas-server-core-audit-api</artifactId>
 			<version>5.3.7</version>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apereo.cas</groupId>
 			<artifactId>cas-server-core-services-registry</artifactId>
 			<version>5.3.7</version>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apereo.cas</groupId>
@@ -58,6 +55,20 @@
 			<artifactId>cas-server-core-services</artifactId>
 			<version>5.3.7</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-support-oauth-core-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-oauth-core-api</artifactId>
+			<version>6.1.0-RC3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-support-pac4j-api -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-support-pac4j-api</artifactId>
+			<version>6.1.0-RC3</version>
+			<scope>runtime</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apereo.cas</groupId>
 			<artifactId>cas-server-support-throttle-core</artifactId>
@@ -146,6 +157,11 @@
 			<artifactId>cas-server-core-authentication-api</artifactId>
 			<version>5.3.7</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-api-ticket</artifactId>
+			<version>5.3.7</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-configuration -->
 		<dependency>
 			<groupId>org.apereo.cas</groupId>
@@ -209,7 +225,44 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjtools -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-audit -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-audit</artifactId>
+			<version>5.3.7</version>
+		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apereo.cas/cas-server-core-api-audit -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-api-audit</artifactId>
+			<version>5.3.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.pac4j/pac4j-cas -->
+		<dependency>
+			<groupId>org.pac4j</groupId>
+			<artifactId>pac4j-cas</artifactId>
+			<version>1.9.6</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.pac4j/spring-webmvc-pac4j -->
+		<dependency>
+			<groupId>org.pac4j</groupId>
+			<artifactId>spring-webmvc-pac4j</artifactId>
+			<version>3.2.0</version>
+		</dependency>
 
 	</dependencies>
 	<build>

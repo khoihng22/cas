@@ -24,4 +24,3 @@ public interface OAuth20UserProfileDataCreator {
      */
     Map<String, Object> createFrom(AccessToken accessToken, J2EContext j2EContext);
 }
-

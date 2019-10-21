@@ -1,21 +1,21 @@
 package org.apereo.cas.support.oauth.profile;
 
-import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.support.oauth.OAuth20Constants;
-import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
-import org.apereo.cas.support.oauth.util.OAuth20Utils;
-
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.pac4j.core.context.WebContext;
-import org.pac4j.core.context.session.SessionStore;
-import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.core.profile.ProfileManager;
-
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
+import org.apereo.cas.support.oauth.util.OAuth20Utils;
+import org.pac4j.core.context.WebContext;
+import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.profile.ProfileManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is a profile manager used during OAuth authentication.
@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
  */
 public class ClientIdAwareProfileManager<U extends CommonProfile> extends ProfileManager<U> {
 
+	Logger LOGGER = LoggerFactory.getLogger(ClientIdAwareProfileManager.class);
     private static final String SESSION_CLIENT_ID = "oauthClientId";
 
     private final ServicesManager servicesManager;
@@ -72,4 +73,3 @@ public class ClientIdAwareProfileManager<U extends CommonProfile> extends Profil
         return clientId;
     }
 }
-

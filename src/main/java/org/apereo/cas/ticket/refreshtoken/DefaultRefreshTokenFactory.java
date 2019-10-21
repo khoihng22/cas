@@ -20,7 +20,6 @@ import java.util.Collection;
  * @since 5.0.0
  */
 @Slf4j
-@AllArgsConstructor
 public class DefaultRefreshTokenFactory implements RefreshTokenFactory {
 
     /**
@@ -38,7 +37,15 @@ public class DefaultRefreshTokenFactory implements RefreshTokenFactory {
     }
 
 
-    @Override
+    public DefaultRefreshTokenFactory(UniqueTicketIdGenerator refreshTokenIdGenerator,
+			ExpirationPolicy expirationPolicy) {
+		super();
+		this.refreshTokenIdGenerator = refreshTokenIdGenerator;
+		this.expirationPolicy = expirationPolicy;
+	}
+
+
+	@Override
     public RefreshToken create(final Service service, final Authentication authentication,
                                final TicketGrantingTicket ticketGrantingTicket, final Collection<String> scopes) {
         final String codeId = this.refreshTokenIdGenerator.getNewTicketId(RefreshToken.PREFIX);

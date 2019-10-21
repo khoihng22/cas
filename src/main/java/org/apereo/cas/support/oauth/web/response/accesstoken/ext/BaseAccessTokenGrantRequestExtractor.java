@@ -1,7 +1,8 @@
 package org.apereo.cas.support.oauth.web.response.accesstoken.ext;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.configuration.model.support.oauth.OAuthProperties;
 import org.apereo.cas.services.ServicesManager;
@@ -11,8 +12,7 @@ import org.apereo.inspektr.audit.annotation.Audit;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This is {@link BaseAccessTokenGrantRequestExtractor}.
@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 @EnableTransactionManagement(proxyTargetClass = true)
 @Transactional(transactionManager = "ticketTransactionManager")
 @Slf4j
-@AllArgsConstructor
 public abstract class BaseAccessTokenGrantRequestExtractor {
     /**
      * The Services manager.
@@ -44,7 +43,16 @@ public abstract class BaseAccessTokenGrantRequestExtractor {
      */
     protected final OAuthProperties oAuthProperties;
     
-    /**
+    public BaseAccessTokenGrantRequestExtractor(ServicesManager servicesManager, TicketRegistry ticketRegistry,
+			CentralAuthenticationService centralAuthenticationService, OAuthProperties oAuthProperties) {
+		super();
+		this.servicesManager = servicesManager;
+		this.ticketRegistry = ticketRegistry;
+		this.centralAuthenticationService = centralAuthenticationService;
+		this.oAuthProperties = oAuthProperties;
+	}
+
+	/**
      * Extract access token request for grant.
      *
      * @param request  the request
@@ -71,4 +79,3 @@ public abstract class BaseAccessTokenGrantRequestExtractor {
      */
     public abstract OAuth20GrantTypes getGrantType();
 }
-
