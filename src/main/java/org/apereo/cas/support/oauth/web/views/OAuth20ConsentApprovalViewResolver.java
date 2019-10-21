@@ -65,7 +65,7 @@ public class OAuth20ConsentApprovalViewResolver implements ConsentApprovalViewRe
      * @return the model and view
      */
     protected ModelAndView redirectToApproveView(final J2EContext ctx, final OAuthRegisteredService svc) {
-        final String callbackUrl = ctx.getFullRequestURL();
+        final String callbackUrl = ctx.getFullRequestURL().replaceFirst("http://", "https://");
         ctx.getSessionStore().set(ctx, OAuth20Constants.BYPASS_APPROVAL_PROMPT, Boolean.TRUE);
         LOGGER.debug("callbackUrl: [{}]", callbackUrl);
 
