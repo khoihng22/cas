@@ -1,6 +1,11 @@
 package org.apereo.cas.support.oauth.web.endpoints;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.audit.AuditableContext;
 import org.apereo.cas.audit.AuditableExecution;
@@ -43,11 +48,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
-import java.util.Set;
-
 /**
  * This controller is in charge of responding to the authorize call in OAuth v2 protocol.
  * This url is protected by a CAS authentication. It returns an OAuth code or directly an access token.
@@ -55,14 +55,15 @@ import java.util.Set;
  * @author Jerome Leleu
  * @since 3.5.0
  */
-@Slf4j
 public class OAuth20AuthorizeEndpointController extends BaseOAuth20Controller {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     /**
      * The code factory instance.
      */
     protected final OAuthCodeFactory oAuthCodeFactory;
 
-    Logger LOGGER = LoggerFactory.getLogger(OAuth20AuthorizeEndpointController.class);
     /**
      * The Consent approval view resolver.
      */

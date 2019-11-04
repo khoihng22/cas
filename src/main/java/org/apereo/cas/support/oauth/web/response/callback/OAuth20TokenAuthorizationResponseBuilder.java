@@ -9,6 +9,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.web.response.accesstoken.OAuth20TokenGenerator;
 import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenRequestDataHolder;
 import org.apereo.cas.ticket.ExpirationPolicy;
@@ -32,9 +33,12 @@ import java.util.List;
  */
 public class OAuth20TokenAuthorizationResponseBuilder implements OAuth20AuthorizationResponseBuilder {
 
-	Logger LOGGER = LoggerFactory.getLogger(OAuth20TokenAuthorizationResponseBuilder.class);
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     private final OAuth20TokenGenerator accessTokenGenerator;
     private final ExpirationPolicy accessTokenExpirationPolicy;
+    
+    
 
     public OAuth20TokenAuthorizationResponseBuilder(OAuth20TokenGenerator accessTokenGenerator,
 			ExpirationPolicy accessTokenExpirationPolicy) {
@@ -45,7 +49,6 @@ public class OAuth20TokenAuthorizationResponseBuilder implements OAuth20Authoriz
 
 
 	@Override
-    @SneakyThrows
     public View build(final J2EContext context, final String clientId, final AccessTokenRequestDataHolder holder) {
 
         final String redirectUri = context.getRequestParameter(OAuth20Constants.REDIRECT_URI);
@@ -53,8 +56,13 @@ public class OAuth20TokenAuthorizationResponseBuilder implements OAuth20Authoriz
         final Pair<AccessToken, RefreshToken> accessToken = accessTokenGenerator.generate(holder);
         final AccessToken key = accessToken.getKey();
         LOGGER.debug("Generated OAuth access token: [{}]", key);
-        return buildCallbackUrlResponseType(holder, redirectUri, key, new ArrayList<>(), accessToken.getValue(), context);
-
+        try {
+			return buildCallbackUrlResponseType(holder, redirectUri, key, new ArrayList<>(), accessToken.getValue(), context);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return null;
     }
 
 

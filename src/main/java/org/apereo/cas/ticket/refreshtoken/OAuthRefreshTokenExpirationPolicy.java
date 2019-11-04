@@ -1,18 +1,23 @@
 package org.apereo.cas.ticket.refreshtoken;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
+import org.apereo.cas.ticket.TicketState;
+import org.apereo.cas.ticket.support.AbstractCasExpirationPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apereo.cas.ticket.TicketState;
-import org.apereo.cas.ticket.support.AbstractCasExpirationPolicy;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
+import groovy.transform.EqualsAndHashCode;
+import groovy.util.logging.Slf4j;
+import lombok.NoArgsConstructor;
 
 /**
  * This is OAuth refresh token expiration policy (max time to live = 1 month by default).
@@ -21,14 +26,18 @@ import java.time.temporal.ChronoUnit;
  * @since 5.0.0
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-@Slf4j
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class OAuthRefreshTokenExpirationPolicy extends AbstractCasExpirationPolicy {
 
     private static final long serialVersionUID = -7144233906843566234L;
+    
+    static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
 
-    /**
+    public OAuthRefreshTokenExpirationPolicy() {
+		super();
+	}
+
+	/**
      * The time to kill in milliseconds.
      */
     private long timeToKillInSeconds;
@@ -83,11 +92,13 @@ public class OAuthRefreshTokenExpirationPolicy extends AbstractCasExpirationPoli
      */
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
     @Slf4j
-    @NoArgsConstructor
     @EqualsAndHashCode(callSuper = true)
     public static class OAuthRefreshTokenSovereignExpirationPolicy extends OAuthRefreshTokenExpirationPolicy {
         private static final long serialVersionUID = -7768661082888351104L;
-
+        
+        public OAuthRefreshTokenSovereignExpirationPolicy() {
+        	
+        }
         @JsonCreator
         public OAuthRefreshTokenSovereignExpirationPolicy(@JsonProperty("timeToLive") final long timeToKillInSeconds) {
             super(timeToKillInSeconds);

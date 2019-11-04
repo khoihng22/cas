@@ -16,6 +16,7 @@ import org.pac4j.core.context.J2EContext;
  * @author Misagh Moayyed
  * @since 5.3.0
  */
+@Slf4j
 public class OAuth20ClientCredentialsGrantTypeTokenRequestValidator extends OAuth20PasswordGrantTypeTokenRequestValidator {
     public OAuth20ClientCredentialsGrantTypeTokenRequestValidator(final ServicesManager servicesManager,
                                                                   final AuditableExecution registeredServiceAccessStrategyEnforcer,

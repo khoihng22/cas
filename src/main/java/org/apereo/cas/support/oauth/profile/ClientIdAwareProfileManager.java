@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.pac4j.core.context.WebContext;
@@ -28,10 +29,11 @@ import org.slf4j.LoggerFactory;
  */
 public class ClientIdAwareProfileManager<U extends CommonProfile> extends ProfileManager<U> {
 
-	Logger LOGGER = LoggerFactory.getLogger(ClientIdAwareProfileManager.class);
     private static final String SESSION_CLIENT_ID = "oauthClientId";
 
     private final ServicesManager servicesManager;
+    
+    static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
 
     public ClientIdAwareProfileManager(final WebContext context, final SessionStore sessionStore, final ServicesManager servicesManager) {
         super(context, sessionStore);

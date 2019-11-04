@@ -1,14 +1,11 @@
 package org.apereo.cas.support.oauth;
 
-import lombok.Getter;
-
 /**
  * The OAuth response types (on the authorize request).
  *
  * @author Jerome Leleu
  * @since 5.0.0
  */
-@Getter
 public enum OAuth20ResponseTypes {
 
     /**

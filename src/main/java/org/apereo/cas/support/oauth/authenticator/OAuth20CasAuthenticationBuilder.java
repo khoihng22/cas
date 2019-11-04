@@ -35,6 +35,7 @@ import org.pac4j.core.profile.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * This is {@link OAuth20CasAuthenticationBuilder}.
  *
@@ -42,8 +43,17 @@ import org.slf4j.LoggerFactory;
  * @since 5.1.0
  */
 public class OAuth20CasAuthenticationBuilder {
+	public OAuth20CasAuthenticationBuilder(PrincipalFactory principalFactory,
+			ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory,
+			OAuth20ProfileScopeToAttributesFilter scopeToAttributesFilter, CasConfigurationProperties casProperties) {
+		super();
+		this.principalFactory = principalFactory;
+		this.webApplicationServiceServiceFactory = webApplicationServiceServiceFactory;
+		this.scopeToAttributesFilter = scopeToAttributesFilter;
+		this.casProperties = casProperties;
+	}
 
-	Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
     /**
      * The Principal factory.
      */
@@ -64,17 +74,7 @@ public class OAuth20CasAuthenticationBuilder {
      */
     protected final CasConfigurationProperties casProperties;
     
-    public OAuth20CasAuthenticationBuilder(PrincipalFactory principalFactory,
-			ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory,
-			OAuth20ProfileScopeToAttributesFilter scopeToAttributesFilter, CasConfigurationProperties casProperties) {
-		super();
-		this.principalFactory = principalFactory;
-		this.webApplicationServiceServiceFactory = webApplicationServiceServiceFactory;
-		this.scopeToAttributesFilter = scopeToAttributesFilter;
-		this.casProperties = casProperties;
-	}
-
-	/**
+    /**
      * Build service.
      *
      * @param registeredService the registered service

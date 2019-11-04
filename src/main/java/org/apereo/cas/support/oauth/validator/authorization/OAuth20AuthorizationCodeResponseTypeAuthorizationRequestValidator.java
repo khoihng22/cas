@@ -10,6 +10,7 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.apereo.cas.util.HttpRequestUtils;
@@ -29,8 +30,9 @@ public class OAuth20AuthorizationCodeResponseTypeAuthorizationRequestValidator i
     private final ServicesManager servicesManager;
     private final ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory;
     private final AuditableExecution registeredServiceAccessStrategyEnforcer;
+    
+    static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
 
-    Logger LOGGER = LoggerFactory.getLogger(OAuth20AuthorizationCodeResponseTypeAuthorizationRequestValidator.class);
     public OAuth20AuthorizationCodeResponseTypeAuthorizationRequestValidator(ServicesManager servicesManager,
 			ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory,
 			AuditableExecution registeredServiceAccessStrategyEnforcer) {

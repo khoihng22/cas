@@ -1,13 +1,15 @@
 package org.apereo.cas.support.oauth.web.response.callback;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20GrantTypes;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.apereo.cas.support.oauth.web.response.accesstoken.AccessTokenResponseGenerator;
 import org.apereo.cas.support.oauth.web.response.accesstoken.OAuth20TokenGenerator;
 import org.apereo.cas.ticket.ExpirationPolicy;
 import org.pac4j.core.context.J2EContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is {@link OAuth20ClientCredentialsResponseBuilder}.
@@ -15,8 +17,9 @@ import org.pac4j.core.context.J2EContext;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-@Slf4j
 public class OAuth20ClientCredentialsResponseBuilder extends OAuth20ResourceOwnerCredentialsResponseBuilder {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
 
     public OAuth20ClientCredentialsResponseBuilder(final AccessTokenResponseGenerator accessTokenResponseGenerator,
                                                    final OAuth20TokenGenerator accessTokenGenerator,

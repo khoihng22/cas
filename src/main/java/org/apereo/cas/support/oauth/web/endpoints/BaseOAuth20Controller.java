@@ -5,13 +5,14 @@ import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.profile.OAuth20ProfileScopeToAttributesFilter;
 import org.apereo.cas.ticket.accesstoken.AccessTokenFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * This controller is the base controller for wrapping OAuth protocol in CAS.
@@ -20,9 +21,10 @@ import lombok.extern.slf4j.Slf4j;
  * @since 3.5.0
  */
 @Controller
-@Slf4j
 public abstract class BaseOAuth20Controller {
 
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     /**
      * Services manager.
      */

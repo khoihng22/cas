@@ -1,14 +1,11 @@
 package org.apereo.cas.support.oauth;
 
-import lombok.Getter;
-
 /**
  * The OAuth grant types (on the access token request).
  *
  * @author Jerome Leleu
  * @since 5.0.0
  */
-@Getter
 public enum OAuth20GrantTypes {
 
     /**
@@ -37,4 +34,6 @@ public enum OAuth20GrantTypes {
 	public String getType() {
 		return type;
 	}
+    
+    
 }

@@ -8,10 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20GrantTypes;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.web.response.accesstoken.ext.BaseAccessTokenGrantRequestExtractor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * This is {@link OAuth20HandlerInterceptorAdapter}.
@@ -19,8 +20,10 @@ import lombok.extern.slf4j.Slf4j;
  * @author Misagh Moayyed
  * @since 5.1.0
  */
-@Slf4j
 public class OAuth20HandlerInterceptorAdapter extends HandlerInterceptorAdapter {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     /**
      * Access token interceptor.
      */

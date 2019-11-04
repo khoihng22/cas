@@ -1,7 +1,7 @@
 package org.apereo.cas.support.oauth.authenticator;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.AuthenticationResult;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
@@ -22,8 +22,6 @@ import org.pac4j.core.profile.CommonProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 /**
  * Authenticator for user credentials authentication.
  *
@@ -31,13 +29,13 @@ import java.util.Map;
  * @since 5.0.0
  */
 public class OAuth20UserAuthenticator implements Authenticator<UsernamePasswordCredentials> {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     private final AuthenticationSystemSupport authenticationSystemSupport;
     private final ServicesManager servicesManager;
     private final ServiceFactory webApplicationServiceFactory;
 
-	Logger LOGGER = LoggerFactory.getLogger(OAuth20UserAuthenticator.class);
-
-	
     public OAuth20UserAuthenticator(AuthenticationSystemSupport authenticationSystemSupport,
 			ServicesManager servicesManager, ServiceFactory webApplicationServiceFactory) {
 		super();

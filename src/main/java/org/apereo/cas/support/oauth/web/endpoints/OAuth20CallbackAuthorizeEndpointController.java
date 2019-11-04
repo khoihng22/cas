@@ -1,6 +1,8 @@
 package org.apereo.cas.support.oauth.web.endpoints;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.ServiceFactory;
@@ -9,6 +11,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.authenticator.Authenticators;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.profile.OAuth20ProfileScopeToAttributesFilter;
 import org.apereo.cas.support.oauth.web.views.OAuth20CallbackAuthorizeViewResolver;
 import org.apereo.cas.ticket.accesstoken.AccessTokenFactory;
@@ -20,11 +23,10 @@ import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.DefaultCallbackLogic;
 import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
 import org.pac4j.core.profile.ProfileManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * OAuth callback authorize controller based on the pac4j callback controller.
@@ -32,8 +34,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jerome Leleu
  * @since 3.5.0
  */
-@Slf4j
 public class OAuth20CallbackAuthorizeEndpointController extends BaseOAuth20Controller {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
 
     private final Config oauthConfig;
     private final OAuth20CallbackAuthorizeViewResolver oAuth20CallbackAuthorizeViewResolver;
@@ -68,7 +71,7 @@ public class OAuth20CallbackAuthorizeEndpointController extends BaseOAuth20Contr
         callback.perform(context, oauthConfig, J2ENopHttpActionAdapter.INSTANCE,
             null, Boolean.TRUE, Boolean.FALSE,
             Boolean.FALSE, Authenticators.CAS_OAUTH_CLIENT);
-        final String url = StringUtils.remove(((HttpServletRequest) response).getHeader("Location"), "redirect:");
+        final String url = StringUtils.remove(response.getHeader("Location"), "redirect:");
         final ProfileManager manager = Pac4jUtils.getPac4jProfileManager(request, response);
         return oAuth20CallbackAuthorizeViewResolver.resolve(context, manager, url);
     }

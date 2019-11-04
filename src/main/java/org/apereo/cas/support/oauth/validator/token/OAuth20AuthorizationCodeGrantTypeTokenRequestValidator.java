@@ -1,5 +1,7 @@
 package org.apereo.cas.support.oauth.validator.token;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apereo.cas.audit.AuditableContext;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.audit.AuditableExecutionResult;
@@ -13,13 +15,11 @@ import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.apereo.cas.ticket.code.OAuthCode;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.HttpRequestUtils;
-
-import lombok.extern.slf4j.Slf4j;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
 
-import javax.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This is {@link OAuth20AuthorizationCodeGrantTypeTokenRequestValidator}.
@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Misagh Moayyed
  * @since 5.3.0
  */
+@Slf4j
 public class OAuth20AuthorizationCodeGrantTypeTokenRequestValidator extends BaseOAuth20TokenRequestValidator {
     private final TicketRegistry ticketRegistry;
 

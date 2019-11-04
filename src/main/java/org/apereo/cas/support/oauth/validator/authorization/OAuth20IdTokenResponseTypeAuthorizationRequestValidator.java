@@ -5,6 +5,9 @@ import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is {@link OAuth20IdTokenResponseTypeAuthorizationRequestValidator}.
@@ -19,6 +22,7 @@ public class OAuth20IdTokenResponseTypeAuthorizationRequestValidator extends OAu
         super(servicesManager, webApplicationServiceServiceFactory, registeredServiceAccessStrategyEnforcer);
     }
 
+    static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
     /**
      * Gets response type.
      *

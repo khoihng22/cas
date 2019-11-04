@@ -8,7 +8,6 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.log4j.Logger;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionStrategy;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.ServiceFactory;
@@ -19,28 +18,25 @@ import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20GrantTypes;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.apereo.cas.util.HttpRequestUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-/**
- * This is {@link OAuth20AuthenticationServiceSelectionStrategy}.
- *
- * @author Misagh Moayyed
- * @since 5.0.0
- */
 public class OAuth20AuthenticationServiceSelectionStrategy implements AuthenticationServiceSelectionStrategy {
     private static final long serialVersionUID = 8517547235465666978L;
-    
-    static Logger LOGGER = (Logger) LoggerFactory.getLogger(OAuth20AuthenticationServiceSelectionStrategy.class);
     
     private final transient ServicesManager servicesManager;
     private final transient ServiceFactory<WebApplicationService> webApplicationServiceFactory;
     private final String callbackUrl;
+    
+    private final int order = Ordered.HIGHEST_PRECEDENCE;
+    
+    static Logger LOGGER = LoggerFactory.getLogger(OAuth20AuthenticationServiceSelectionStrategy.class);
+    
+    
 
-	public OAuth20AuthenticationServiceSelectionStrategy(ServicesManager servicesManager,
+    public OAuth20AuthenticationServiceSelectionStrategy(ServicesManager servicesManager,
 			ServiceFactory<WebApplicationService> webApplicationServiceFactory, String callbackUrl) {
 		super();
 		this.servicesManager = servicesManager;
@@ -48,9 +44,7 @@ public class OAuth20AuthenticationServiceSelectionStrategy implements Authentica
 		this.callbackUrl = callbackUrl;
 	}
 
-	private final int order = Ordered.HIGHEST_PRECEDENCE;
-
-    @Override
+	@Override
     public Service resolveServiceFrom(final Service service) {
         final Optional<NameValuePair> clientId = resolveClientIdFromService(service);
         final Optional<NameValuePair> redirectUri = resolveRedirectUri(service);

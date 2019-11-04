@@ -1,17 +1,16 @@
 package org.apereo.cas.support.oauth.web.views;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.pac4j.core.context.J2EContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This is {@link OAuth20ConsentApprovalViewResolver}.
@@ -21,13 +20,18 @@ import java.util.Map;
  */
 public class OAuth20ConsentApprovalViewResolver implements ConsentApprovalViewResolver {
 
-	Logger LOGGER =LoggerFactory.getLogger(OAuth20ConsentApprovalViewResolver.class);
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
     /**
      * CAS settings.
      */
     protected final CasConfigurationProperties casProperties;
 
-    @Override
+    public OAuth20ConsentApprovalViewResolver(CasConfigurationProperties casProperties) {
+		super();
+		this.casProperties = casProperties;
+	}
+
+	@Override
     public ModelAndView resolve(final J2EContext context, final OAuthRegisteredService service) {
         final Object bypassApprovalParameter = context.getSessionStore().get(context, OAuth20Constants.BYPASS_APPROVAL_PROMPT);
         LOGGER.debug("Bypassing approval prompt for service [{}]: [{}]", service, bypassApprovalParameter);
@@ -41,12 +45,7 @@ public class OAuth20ConsentApprovalViewResolver implements ConsentApprovalViewRe
         return redirectToApproveView(context, service);
     }
 
-    public OAuth20ConsentApprovalViewResolver(CasConfigurationProperties casProperties) {
-		super();
-		this.casProperties = casProperties;
-	}
-
-	/**
+    /**
      * Is consent approval bypassed?
      *
      * @param context the context

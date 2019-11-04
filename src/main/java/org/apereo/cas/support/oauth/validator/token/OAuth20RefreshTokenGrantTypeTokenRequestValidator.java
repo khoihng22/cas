@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,6 +32,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class OAuth20RefreshTokenGrantTypeTokenRequestValidator extends BaseOAuth20TokenRequestValidator {
     private final TicketRegistry ticketRegistry;
+    
+    Logger LOGGER = LoggerFactory.getLogger(OAuth20RefreshTokenGrantTypeTokenRequestValidator.class);
 
     public OAuth20RefreshTokenGrantTypeTokenRequestValidator(final AuditableExecution registeredServiceAccessStrategyEnforcer,
                                                              final ServicesManager servicesManager,

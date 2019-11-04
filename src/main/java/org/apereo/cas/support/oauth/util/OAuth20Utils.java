@@ -1,7 +1,34 @@
 package org.apereo.cas.support.oauth.util;
 
-import static org.apereo.cas.support.oauth.OAuth20Constants.BASE_OAUTH20_URL;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.NonNull;
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.http.HttpStatus;
+import org.apereo.cas.CasProtocolConstants;
+import org.apereo.cas.services.RegisteredService;
+import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.services.UnauthorizedServiceException;
+import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.OAuth20GrantTypes;
+import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
+import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
+import org.apereo.cas.util.CollectionUtils;
+import org.pac4j.core.context.J2EContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -16,35 +43,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.http.HttpStatus;
-import org.apereo.cas.CasProtocolConstants;
-import org.apereo.cas.services.RegisteredService;
-import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.services.UnauthorizedServiceException;
-import org.apereo.cas.support.oauth.OAuth20Constants;
-import org.apereo.cas.support.oauth.OAuth20GrantTypes;
-import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
-import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
-import org.apereo.cas.util.CollectionUtils;
-import org.pac4j.core.context.J2EContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
+import static org.apereo.cas.support.oauth.OAuth20Constants.BASE_OAUTH20_URL;
 
 /**
  * This class has some useful methods to output data in plain text,
@@ -56,8 +55,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class OAuth20Utils {
     private static final ObjectWriter WRITER = new ObjectMapper().findAndRegisterModules().writer().withDefaultPrettyPrinter();
+    
+    static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
 
-    static Logger LOGGER = LoggerFactory.getLogger(OAuth20Utils.class);
     /**
      * Write to the output this error text and return a null view.
      *
@@ -221,7 +221,8 @@ public class OAuth20Utils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+        
+        return "";
     }
 
     /**

@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.DefaultAuthenticationBuilder;
 import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenRequestDataHolder;
 import org.apereo.cas.ticket.OAuthToken;
 import org.apereo.cas.ticket.TicketGrantingTicket;
@@ -25,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OAuth20DefaultTokenGenerator implements OAuth20TokenGenerator {
 
-	Logger LOGGER = LoggerFactory.getLogger(OAuth20DefaultTokenGenerator.class);
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
     /**
      * The Access token factory.
      */

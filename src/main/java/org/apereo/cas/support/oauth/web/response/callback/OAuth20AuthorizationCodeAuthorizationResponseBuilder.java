@@ -1,11 +1,10 @@
 package org.apereo.cas.support.oauth.web.response.callback;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenRequestDataHolder;
 import org.apereo.cas.ticket.code.OAuthCode;
 import org.apereo.cas.ticket.code.OAuthCodeFactory;
@@ -23,20 +22,24 @@ import org.springframework.web.servlet.view.RedirectView;
  * @author Misagh Moayyed
  * @since 5.2.0
  */
-@Slf4j
-@RequiredArgsConstructor
 public class OAuth20AuthorizationCodeAuthorizationResponseBuilder implements OAuth20AuthorizationResponseBuilder {
-    
-	Logger LOGGER = LoggerFactory.getLogger(OAuth20AuthorizationCodeAuthorizationResponseBuilder.class);
-	/**
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+    /**
      * The Ticket registry.
      */
     protected final TicketRegistry ticketRegistry;
 
     private final OAuthCodeFactory oAuthCodeFactory;
 
-    
-    @Override
+    public OAuth20AuthorizationCodeAuthorizationResponseBuilder(TicketRegistry ticketRegistry,
+			OAuthCodeFactory oAuthCodeFactory) {
+		super();
+		this.ticketRegistry = ticketRegistry;
+		this.oAuthCodeFactory = oAuthCodeFactory;
+	}
+
+	@Override
     public View build(final J2EContext context, final String clientId, final AccessTokenRequestDataHolder holder) {
         final Authentication authentication = holder.getAuthentication();
         final OAuthCode code = oAuthCodeFactory.create(holder.getService(), authentication, holder.getTicketGrantingTicket(), holder.getScopes());
@@ -61,14 +64,7 @@ public class OAuth20AuthorizationCodeAuthorizationResponseBuilder implements OAu
         return new RedirectView(callbackUrl);
     }
 
-    public OAuth20AuthorizationCodeAuthorizationResponseBuilder(TicketRegistry ticketRegistry,
-			OAuthCodeFactory oAuthCodeFactory) {
-		super();
-		this.ticketRegistry = ticketRegistry;
-		this.oAuthCodeFactory = oAuthCodeFactory;
-	}
-
-	@Override
+    @Override
     public boolean supports(final J2EContext context) {
         final String responseType = context.getRequestParameter(OAuth20Constants.RESPONSE_TYPE);
         return StringUtils.equalsIgnoreCase(responseType, OAuth20ResponseTypes.CODE.getType());

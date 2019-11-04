@@ -1,6 +1,10 @@
 package org.apereo.cas.support.oauth.web.endpoints;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.ServiceFactory;
@@ -8,6 +12,7 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.profile.OAuth20ProfileScopeToAttributesFilter;
 import org.apereo.cas.support.oauth.profile.OAuth20UserProfileDataCreator;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
@@ -29,10 +34,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-
 /**
  * This controller returns a profile for the authenticated user
  * (identifier + attributes), found with the access token.
@@ -40,10 +41,10 @@ import java.util.Map;
  * @author Jerome Leleu
  * @since 3.5.0
  */
-@Slf4j
 public class OAuth20UserProfileEndpointController extends BaseOAuth20Controller {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
 
-	Logger LOGGER = LoggerFactory.getLogger(OAuth20UserProfileEndpointController.class);
     /**
      * View renderer for the final profile.
      */

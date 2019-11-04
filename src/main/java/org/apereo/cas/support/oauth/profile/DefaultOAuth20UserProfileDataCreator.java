@@ -9,6 +9,7 @@ import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.oauth.web.views.OAuth20UserProfileViewRenderer;
 import org.apereo.cas.ticket.accesstoken.AccessToken;
@@ -24,8 +25,9 @@ import org.slf4j.LoggerFactory;
  * @since 5.3.0
  */
 public class DefaultOAuth20UserProfileDataCreator implements OAuth20UserProfileDataCreator {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
 
-	Logger LOGGER = LoggerFactory.getLogger(DefaultOAuth20UserProfileDataCreator.class);
     /**
      * The services manager.
      */
@@ -36,7 +38,14 @@ public class DefaultOAuth20UserProfileDataCreator implements OAuth20UserProfileD
      */
     private OAuth20ProfileScopeToAttributesFilter scopeToAttributesFilter;
 
-    @Override
+    public DefaultOAuth20UserProfileDataCreator(ServicesManager servicesManager,
+			OAuth20ProfileScopeToAttributesFilter scopeToAttributesFilter) {
+		super();
+		this.servicesManager = servicesManager;
+		this.scopeToAttributesFilter = scopeToAttributesFilter;
+	}
+
+	@Override
     @Audit(action = "OAUTH2_USER_PROFILE_DATA",
         actionResolverName = "OAUTH2_USER_PROFILE_DATA_ACTION_RESOLVER",
         resourceResolverName = "OAUTH2_USER_PROFILE_DATA_RESOURCE_RESOLVER")

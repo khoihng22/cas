@@ -7,8 +7,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.ticket.TicketState;
 import org.apereo.cas.ticket.support.AbstractCasExpirationPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -21,11 +25,11 @@ import java.time.temporal.ChronoUnit;
  * @since 5.0.0
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-@Slf4j
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class OAuthAccessTokenExpirationPolicy extends AbstractCasExpirationPolicy {
 
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     private static final long serialVersionUID = -8383186650682727360L;
 
     /**
@@ -38,7 +42,11 @@ public class OAuthAccessTokenExpirationPolicy extends AbstractCasExpirationPolic
      */
     private long timeToKillInSeconds;
 
-    @JsonCreator
+    public OAuthAccessTokenExpirationPolicy() {
+		super();
+	}
+
+	@JsonCreator
     public OAuthAccessTokenExpirationPolicy(@JsonProperty("timeToLive") final long maxTimeToLive,
                                             @JsonProperty("timeToIdle") final long timeToKill) {
         this.maxTimeToLiveInSeconds = maxTimeToLive;

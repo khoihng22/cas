@@ -1,6 +1,11 @@
 package org.apereo.cas.support.oauth.web.response.accesstoken.ext;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableContext;
 import org.apereo.cas.audit.AuditableExecution;
@@ -26,11 +31,6 @@ import org.pac4j.core.profile.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
-import java.util.Set;
-
 /**
  * This is {@link AccessTokenPasswordGrantRequestExtractor}.
  *
@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public class AccessTokenPasswordGrantRequestExtractor extends BaseAccessTokenGrantRequestExtractor {
 
-	Logger LOGGER = LoggerFactory.getLogger(AccessTokenPasswordGrantRequestExtractor.class);
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
     private final AuditableExecution registeredServiceAccessStrategyEnforcer;
     private final OAuth20CasAuthenticationBuilder authenticationBuilder;
 

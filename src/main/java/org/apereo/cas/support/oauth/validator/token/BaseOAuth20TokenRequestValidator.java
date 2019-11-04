@@ -1,5 +1,10 @@
 package org.apereo.cas.support.oauth.validator.token;
 
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -8,13 +13,7 @@ import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20GrantTypes;
 import org.apereo.cas.support.oauth.services.OAuthRegisteredService;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
-import org.apereo.cas.support.oauth.web.OAuth20CasCallbackUrlResolver;
 import org.apereo.cas.util.Pac4jUtils;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
@@ -23,23 +22,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
-
 /**
  * This is {@link BaseOAuth20TokenRequestValidator}.
  *
  * @author Misagh Moayyed
  * @since 5.3.0
  */
-@Getter
-@Setter
 public abstract class BaseOAuth20TokenRequestValidator implements OAuth20TokenRequestValidator {
 	
-    static Logger LOGGER = LoggerFactory.getLogger(BaseOAuth20TokenRequestValidator.class);
-
-    
+	static Logger LOGGER = LoggerFactory.getLogger(BaseOAuth20TokenRequestValidator.class);
     /**
      * Access strategy enforcer.
      */
@@ -54,8 +45,6 @@ public abstract class BaseOAuth20TokenRequestValidator implements OAuth20TokenRe
      * Service factory instance.
      */
     protected final ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory;
-
-    private int order = Ordered.LOWEST_PRECEDENCE;
 
     public BaseOAuth20TokenRequestValidator(AuditableExecution registeredServiceAccessStrategyEnforcer,
 			ServicesManager servicesManager, ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory,
@@ -76,7 +65,9 @@ public abstract class BaseOAuth20TokenRequestValidator implements OAuth20TokenRe
 		this.webApplicationServiceServiceFactory = webApplicationServiceServiceFactory;
 	}
 
-	/**
+	private int order = Ordered.LOWEST_PRECEDENCE;
+
+    /**
      * Check the grant type against expected grant types.
      *
      * @param type          the current grant type

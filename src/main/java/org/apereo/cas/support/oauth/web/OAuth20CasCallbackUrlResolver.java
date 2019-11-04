@@ -3,6 +3,7 @@ package org.apereo.cas.support.oauth.web;
 import java.util.Optional;
 
 import org.apereo.cas.support.oauth.OAuth20Constants;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.jasig.cas.client.util.URIBuilder;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.http.url.UrlResolver;
@@ -18,20 +19,21 @@ import org.slf4j.LoggerFactory;
 public class OAuth20CasCallbackUrlResolver implements UrlResolver {
     private final String callbackUrl;
 
-    Logger LOGGER = LoggerFactory.getLogger(OAuth20CasCallbackUrlResolver.class);
-    private static Optional<URIBuilder.BasicNameValuePair> getQueryParameter(final WebContext context, final String name) {
+    static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+    
+    public OAuth20CasCallbackUrlResolver(String callbackUrl) {
+		super();
+		this.callbackUrl = callbackUrl;
+	}
+
+	private static Optional<URIBuilder.BasicNameValuePair> getQueryParameter(final WebContext context, final String name) {
         final URIBuilder builderContext = new URIBuilder(context.getFullRequestURL());
         return builderContext.getQueryParams()
             .stream().filter(p -> p.getName().equalsIgnoreCase(name))
             .findFirst();
     }
 
-    public OAuth20CasCallbackUrlResolver(String callbackUrl) {
-		super();
-		this.callbackUrl = callbackUrl;
-	}
-
-	@Override
+    @Override
     public String compute(final String url, final WebContext context) {
         if (url.startsWith(callbackUrl)) {
             final URIBuilder builder = new URIBuilder(url, true);

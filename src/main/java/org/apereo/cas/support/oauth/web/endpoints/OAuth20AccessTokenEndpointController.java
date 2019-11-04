@@ -1,10 +1,11 @@
 package org.apereo.cas.support.oauth.web.endpoints;
 
-import com.google.common.base.Supplier;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Collection;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.Logger;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -12,6 +13,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.OAuth20ResponseTypes;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.profile.OAuth20ProfileScopeToAttributesFilter;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.apereo.cas.support.oauth.validator.token.OAuth20TokenRequestValidator;
@@ -27,14 +29,13 @@ import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.Pac4jUtils;
 import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
 import org.pac4j.core.context.J2EContext;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
+import com.google.common.base.Supplier;
 
 /**
  * This controller returns an access token according to the given
@@ -46,12 +47,13 @@ import java.util.Collection;
  * @author Jerome Leleu
  * @since 3.5.0
  */
-@Slf4j
 public class OAuth20AccessTokenEndpointController extends BaseOAuth20Controller {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     private final OAuth20TokenGenerator accessTokenGenerator;
     private final AccessTokenResponseGenerator accessTokenResponseGenerator;
 
-    Logger LOGGER = (Logger) LoggerFactory.getLogger(OAuth20AccessTokenEndpointController.class);
     private final ExpirationPolicy accessTokenExpirationPolicy;
     private final Collection<BaseAccessTokenGrantRequestExtractor> accessTokenGrantRequestExtractors;
     private final Collection<OAuth20TokenRequestValidator> accessTokenGrantRequestValidators;
@@ -94,7 +96,6 @@ public class OAuth20AccessTokenEndpointController extends BaseOAuth20Controller 
      */
     @PostMapping(path = {OAuth20Constants.BASE_OAUTH20_URL + '/' + OAuth20Constants.ACCESS_TOKEN_URL,
         OAuth20Constants.BASE_OAUTH20_URL + '/' + OAuth20Constants.TOKEN_URL})
-    @SneakyThrows
     public void handleRequest(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         response.setContentType(MediaType.TEXT_PLAIN_VALUE);
 

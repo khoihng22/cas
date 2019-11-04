@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apereo.cas.configuration.model.support.oauth.OAuthProperties;
+import org.apereo.cas.support.oauth.authenticator.OAuth20CasAuthenticationBuilder;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.apereo.cas.ticket.accesstoken.AccessToken;
 import org.hjson.JsonValue;
@@ -18,9 +19,11 @@ import org.slf4j.LoggerFactory;
  * @since 5.2.0
  */
 public class OAuth20DefaultUserProfileViewRenderer implements OAuth20UserProfileViewRenderer {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     private final OAuthProperties oauthProperties;
 
-	Logger LOGGER =LoggerFactory.getLogger(OAuth20DefaultUserProfileViewRenderer.class);
 
     public OAuth20DefaultUserProfileViewRenderer(OAuthProperties oauthProperties) {
 		super();

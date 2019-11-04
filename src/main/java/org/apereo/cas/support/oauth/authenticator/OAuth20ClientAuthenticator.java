@@ -1,7 +1,5 @@
 package org.apereo.cas.support.oauth.authenticator;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.audit.AuditableContext;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.audit.AuditableExecutionResult;
@@ -25,12 +23,12 @@ import org.slf4j.LoggerFactory;
  * @since 5.0.0
  */
 public class OAuth20ClientAuthenticator implements Authenticator<UsernamePasswordCredentials> {
+	
+	static Logger LOGGER = LoggerFactory.getLogger(OAuth20CasAuthenticationBuilder.class);
+	
     private final ServicesManager servicesManager;
     private final ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory;
     private final AuditableExecution registeredServiceAccessStrategyEnforcer;
-    
-	Logger LOGGER = LoggerFactory.getLogger(OAuth20ClientAuthenticator.class);
-
 
     public OAuth20ClientAuthenticator(ServicesManager servicesManager,
 			ServiceFactory<WebApplicationService> webApplicationServiceServiceFactory,
